@@ -1,21 +1,28 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
-import { NotesAppStack } from '../lib/notes_app-stack';
+import { FunctionStack } from '../lib/function-stack';
+import { ApiGatewayStack } from '../lib/api-stack';
+import { IAMStack } from '../lib/iam-stack';
+import { DynamoDBStack } from "../lib/db-stack";
+import { taggingVars } from '../lib/tags';
+
 
 const app = new cdk.App();
-new NotesAppStack(app, 'NotesAppStack', {
-  /* If you don't specify 'env', this stack will be environment-agnostic.
-   * Account/Region-dependent features and context lookups will not work,
-   * but a single synthesized template can be deployed anywhere. */
-
-  /* Uncomment the next line to specialize this stack for the AWS Account
-   * and Region that are implied by the current CLI configuration. */
-  // env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },
-
-  /* Uncomment the next line if you know exactly what Account and Region you
-   * want to deploy the stack to. */
-  // env: { account: '123456789012', region: 'us-east-1' },
-
-  /* For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html */
+// Create stacks
+// new IAMStack(app, "NotesApp-CDK-IAMStack", {
+//     stackName: `${taggingVars.ServiceName}-IAMStack`
+// });
+// new FunctionStack(app, 'NotesApp-CDK-LambdaStack', {
+//     stackName: `${taggingVars.ServiceName}-FunctionStack`
+// });
+new ApiGatewayStack(app, 'NotesApp-CDK-ApiGatewayStack',{
+    stackName: `${taggingVars.ServiceName}-ApiGatewayStack`
 });
+new DynamoDBStack(app, "NotesApp-CDK-DynamoDBStack", {
+    stackName: `${taggingVars.ServiceName}-DynamoDBStack`
+})
+
+
+
+

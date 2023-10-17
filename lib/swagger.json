@@ -1,0 +1,69 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Note App API",
+    "description": "API for managing notes in a note app.",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/notes": {
+      "get": {
+        "summary": "Get all notes",
+        "description": "Retrieve a list of all notes in the note app.",
+        "operationId": "getAllNotes",
+        "parameters": [
+          {
+            "name": "x-request-id",
+            "in": "header",
+            "description": "Unique request identifier",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of notes retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Note"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No notes found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Note": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          }
+        },
+        "example": {
+          "id": 1,
+          "title": "Note 1",
+          "content": "This is the content of Note 1"
+        }
+      }
+    }
+  }
+}
