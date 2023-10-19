@@ -21,7 +21,7 @@ export class ApiGatewayStack extends cdk.Stack {
     });
 
     // Create a resource (e.g., /items)
-    const notesResource = api.root.addResource('notes');
+    const notesResource = api.root.addResource('lits-all-notes');
     // Create a GET method and integrate with the Lambda function
     const listAllNotesMethod = notesResource.addMethod('GET', new apigateway.LambdaIntegration(notesLambda));
     // Configure method response
@@ -38,7 +38,7 @@ export class ApiGatewayStack extends cdk.Stack {
     });
 
     /* METHOD to create a note */
-    const createResource = api.root.addResource('create');
+    const createResource = api.root.addResource('create-a-note');
     const createNoteMethod = createResource.addMethod('POST', new apigateway.LambdaIntegration(notesLambda));
     createNoteMethod.addMethodResponse({
       statusCode: '200',
