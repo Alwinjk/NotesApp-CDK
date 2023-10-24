@@ -16,5 +16,18 @@ export class IAMStack extends cdk.Stack {
 
         this.lambdaRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AWSLambda_FullAccess'));
         this.lambdaRole.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'));
+        this.lambdaRole.addToPolicy(new iam.PolicyStatement({
+            actions: [
+                'dynamodb:PutItem',
+                'dynamodb:Scan',
+                'dynamodb:Query',
+                'dynamodb:UpdateItem',
+                'dynamodb:DeleteItem',
+            ],
+            effect: iam.Effect.ALLOW,
+            resources: [
+                'arn:aws:dynamodb:us-east-1:569392177404:table/NotesApp-CDK-NotesTable',
+            ],
+        }));
     }
 }

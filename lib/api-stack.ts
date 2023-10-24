@@ -21,7 +21,7 @@ export class ApiGatewayStack extends cdk.Stack {
     });
 
     // Create a resource (e.g., /items)
-    const notesResource = api.root.addResource('lits-all-notes');
+    const notesResource = api.root.addResource('list-all-notes');
     // Create a GET method and integrate with the Lambda function
     const listAllNotesMethod = notesResource.addMethod('GET', new apigateway.LambdaIntegration(notesLambda));
     // Configure method response
