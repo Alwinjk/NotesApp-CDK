@@ -20,11 +20,9 @@ export class ApiGatewayStack extends cdk.Stack {
       restApiName: 'NotesApp-CDK-API',
     });
 
-    // Create a resource (e.g., /items)
+    /* METHOD to list all notes */
     const notesResource = api.root.addResource('list-all-notes');
-    // Create a GET method and integrate with the Lambda function
     const listAllNotesMethod = notesResource.addMethod('GET', new apigateway.LambdaIntegration(notesLambda));
-    // Configure method response
     listAllNotesMethod.addMethodResponse({
       statusCode: '200',
       responseModels: {
@@ -32,6 +30,21 @@ export class ApiGatewayStack extends cdk.Stack {
           restApi: api,
           contentType: 'application/json',
           modelName: 'listAllNotesModel',
+          schema: { type: apigateway.JsonSchemaType.OBJECT },
+        }),
+      },
+    });
+
+    /* METHOD to list a note */
+    const getResource = api.root.addResource('get-a-note');
+    const getNoteMethod= getResource.addMethod('POST', new apigateway.LambdaIntegration(notesLambda));
+    getNoteMethod.addMethodResponse({
+      statusCode: '200',
+      responseModels: {
+        'application/json': new apigateway.Model(this, 'getNoteModel', {
+          restApi: api,
+          contentType: 'application/json',
+          modelName: 'getNoteModel',
           schema: { type: apigateway.JsonSchemaType.OBJECT },
         }),
       },
@@ -50,7 +63,37 @@ export class ApiGatewayStack extends cdk.Stack {
           schema: { type: apigateway.JsonSchemaType.OBJECT },
         }),
       },
-    })
+    });
+
+    /* METHOD to update a note */
+    const updateResource = api.root.addResource('update-a-note');
+    const updateNoteMethod = updateResource.addMethod('PUT', new apigateway.LambdaIntegration(notesLambda));
+    updateNoteMethod.addMethodResponse({
+      statusCode: '200',
+      responseModels: {
+        'application/json': new apigateway.Model(this, 'updateNoteModel', {
+          restApi: api,
+          contentType: 'application/json',
+          modelName: 'updateNoteModel',
+          schema: { type: apigateway.JsonSchemaType.OBJECT },
+        }),
+      },
+    });
+
+    /* METHOD to delete a note */
+    const deleteResource = api.root.addResource('delete-a-note');
+    const deleteNoteMethod = deleteResource.addMethod('DELETE', new apigateway.LambdaIntegration(notesLambda));
+    deleteNoteMethod.addMethodResponse({
+      statusCode: '200',
+      responseModels: {
+        'application/json': new apigateway.Model(this, 'deleteNoteModel', {
+          restApi: api,
+          contentType: 'application/json',
+          modelName: 'deleteNoteModel',
+          schema: { type: apigateway.JsonSchemaType.OBJECT },
+        }),
+      },
+    });
     
   }
 }
